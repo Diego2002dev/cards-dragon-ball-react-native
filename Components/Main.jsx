@@ -1,41 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import axios from "axios";
+import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-web';
 import Personaje from './Personaje';
+import {useExtraerDatos} from '../hooks/useExtraerDatos';
+import instanciaAxios from '../api/instanciaAxios';
 
 export default function Main() {
 
-
+  const datos = useExtraerDatos(instanciaAxios, "characters?limit=78");
   const [personajes, setPersonajes] = useState([]);
-  const extraerPersonajes = async () => {
-    await axios.get("https://dragonball-api.com/api/characters?limit=78")
-    .then(response => {
-      setPersonajes(response.data.items);
-      console.log(response.data);
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
-
-  useEffect(() => {
-    extraerPersonajes();
-  }, [])
+  
+  useEffect (() => {
+    setPersonajes(datos);
+  }, [datos]);
 
   return (
-    <ScrollView style={{flex: 1}}>
-      
-      <View style={styles.container}>
-          
+    <ScrollView style={styles.container}>
+    <StatusBar style="auto" />
+
         {personajes.map((personaje) => (
           <Personaje key={personaje.id} props={personaje}/>
         ))}
 
-      </View>
-
-    <StatusBar style="auto" />
     </ScrollView>
   );
 }
@@ -63,7 +50,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     paddingBottom: 40,
     backgroundColor: "black",
-  }
+  },
 
 });
 
@@ -84,3 +71,6 @@ const styles = StyleSheet.create({
 // (INICIO) export const Saludo = ...;  => A LA HORA DE IMPORTARLO =>  import { Saludo } from './Saludo';
 //
 // 
+//
+// Los Hooks siempre empiezan por "use..."
+// Las funciones que solo se vayan a usar en el useEffect es mejor que se metan en el propio useEffect
