@@ -4,6 +4,7 @@
     "slug": "curso-Midudev-react-native",
     "version": "1.0.0",
     "orientation": "portrait",
+    "scheme": "cartasDB",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,

@@ -1,10 +1,16 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import { InfoIcon } from './Icons';
+import { useState } from 'react';
 
 const Personaje = ({props}) => {
 
-    const {name, ki, image} = props;
+    const {name, ki, image, description} = props;
 
+    const [boton, setBoton] = useState(false);
 
+    const handleBoton = () => {
+        setBoton(!boton);
+    }
 
     return(
         <View style={styles.personajeContainer}>
@@ -15,6 +21,15 @@ const Personaje = ({props}) => {
                 style={styles.image}
                 source={{uri: image}}
             />
+
+            {description !== undefined && 
+            <Pressable onPress={handleBoton}>
+                <InfoIcon />
+            </Pressable>
+            }
+            
+            {boton && <Text>{description}</Text>}
+
         </View>
     )
 }

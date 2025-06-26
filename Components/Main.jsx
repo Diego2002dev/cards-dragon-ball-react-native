@@ -9,10 +9,16 @@ import instanciaAxios from '../api/instanciaAxios';
 export default function Main() {
 
   const datos = useExtraerDatos(instanciaAxios, "characters?limit=78");
+  const datosTransforms = useExtraerDatos(instanciaAxios, "transformations");
+  const planets = useExtraerDatos(instanciaAxios, "planets?limit=25");
+
   const [personajes, setPersonajes] = useState([]);
   
   useEffect (() => {
-    setPersonajes(datos);
+    if(datos && datosTransforms) {
+      const fusion = [...planets, ...datos, ...datosTransforms];
+      setPersonajes(fusion);
+    }
   }, [datos]);
 
   return (
@@ -20,7 +26,7 @@ export default function Main() {
     <StatusBar style="auto" />
 
         {personajes.map((personaje) => (
-          <Personaje key={personaje.id} props={personaje}/>
+          <Personaje key={`${personaje.id}${personaje.name}`} props={personaje}/>
         ))}
 
     </ScrollView>
