@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { ScrollView } from 'react-native-web';
+import { ScrollView, View } from 'react-native-web';
 import Personaje from './Personaje';
 import {useExtraerDatos} from '../hooks/useExtraerDatos';
 import instanciaAxios from '../api/instanciaAxios';
@@ -22,34 +22,24 @@ export default function Main() {
   }, [datos]);
 
   return (
-    <ScrollView style={styles.container}>
-    <StatusBar style="auto" />
-
-        {personajes.map((personaje) => (
-          <Personaje key={`${personaje.id}${personaje.name}`} props={personaje}/>
-        ))}
-
+    <ScrollView>
+      <View style={styles.container}>
+      <StatusBar style="auto" />
+        
+          {personajes.map((personaje) => (
+            <Personaje key={`${personaje.id}${personaje.name}`} props={personaje}/>
+          ))}
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',  
-  },
-
-  
-  personajeContainer: {
-    flex: 1,
+    flex: 1, 
     flexDirection: 'column',
-    alignItems: 'center',
-    borderWidth: 5,
-    borderColor: 'yellow',
-    borderRadius: 20,
-    margin: 30,
-    
-  },
+    alignItems: "center",
+  },  
   image:{
     width: 250,
     height: 250,

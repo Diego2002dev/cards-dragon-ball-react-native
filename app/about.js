@@ -1,5 +1,5 @@
 import { Text } from "react-native-web";
-import { InfoIcon } from "../Components/Icons";
+import { InfoIcon } from "../componentes/Icons";
 import { Pressable } from "react-native";
 import { Link } from "expo-router";
 

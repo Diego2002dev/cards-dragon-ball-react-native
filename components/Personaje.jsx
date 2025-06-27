@@ -6,16 +6,16 @@ const Personaje = ({props}) => {
 
     const {name, ki, image, description} = props;
 
-    const [boton, setBoton] = useState(false);
+    const [descriptionButtom, setDescriptionButtom] = useState(false);
 
     const handleBoton = () => {
-        setBoton(!boton);
+        setDescriptionButtom(!descriptionButtom);
     }
 
     return(
         <View style={styles.personajeContainer}>
             <Text>{name}</Text>
-            {ki !== "unknown" && ki !== "0" && <Text>Ki: {ki}</Text>}
+            {ki !== "unknown" && ki !== undefined && <Text>Ki: {ki}</Text>}
             
             <Image
                 style={styles.image}
@@ -24,11 +24,11 @@ const Personaje = ({props}) => {
 
             {description !== undefined && 
             <Pressable onPress={handleBoton}>
-                <InfoIcon />
+               {({pressed}) => <InfoIcon style={{opacity: pressed ? 0.35 : 1}} />}
             </Pressable>
             }
             
-            {boton && <Text>{description}</Text>}
+            {descriptionButtom && <Text>{description}</Text>}
 
         </View>
     )
