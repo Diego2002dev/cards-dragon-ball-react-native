@@ -1,53 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { ScrollView, View } from 'react-native-web';
-import Personaje from './Personaje';
-import {useExtraerDatos} from '../hooks/useExtraerDatos';
-import instanciaAxios from '../api/instanciaAxios';
+import { StyleSheet, ScrollView, View, ActivityIndicator, FlatList } from 'react-native';
+import Card from './Card';
+import {useFetchData} from '../hooks/useFetchData';
+import instanceAxios from "../api/instanceAxios";
+
 
 export default function Main() {
 
-  const datos = useExtraerDatos(instanciaAxios, "characters?limit=78");
-  const datosTransforms = useExtraerDatos(instanciaAxios, "transformations");
-  const planets = useExtraerDatos(instanciaAxios, "planets?limit=25");
+  const data = useFetchData(instanceAxios, "characters?limit=78");
+  const dataTransforms = useFetchData(instanceAxios, "transformations");
+  const planets = useFetchData(instanceAxios, "planets?limit=20");
 
-  const [personajes, setPersonajes] = useState([]);
+  const [cards, setCards] = useState([]);
   
   useEffect (() => {
-    if(datos && datosTransforms) {
-      const fusion = [...planets, ...datos, ...datosTransforms];
-      setPersonajes(fusion);
+    if(data.length && dataTransforms.length && planets.length) {
+      const fusion = [...data, ...dataTransforms, ...planets];
+      setCards(fusion);
     }
-  }, [datos]);
+  }, [data, dataTransforms, planets]);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-      <StatusBar style="auto" />
-        
-          {personajes.map((personaje) => (
-            <Personaje key={`${personaje.id}${personaje.name}`} props={personaje}/>
-          ))}
-      </View>
-    </ScrollView>
+    <>
+      {cards.length == 0 ? (
+          <View style={styles.containerMain}>
+              <ActivityIndicator size="large" color="black" />
+          </View>
+      ) : (
+          <FlatList
+            data = {cards}
+            keyExtractor = {(card) => `${card.id}${card.name}`}
+            renderItem = {({item}) => (
+            <Card props={item}/>
+            )}
+          />
+      )}
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    flexDirection: 'column',
+  containerMain: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
-  },  
-  image:{
-    width: 250,
-    height: 250,
-    resizeMode: "contain",
-    paddingBottom: 40,
-    backgroundColor: "black",
   },
-
 });
 
 

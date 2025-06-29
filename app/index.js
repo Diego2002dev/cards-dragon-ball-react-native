@@ -1,7 +1,8 @@
 import { Pressable } from "react-native";
-import Main from "../componentes/Main";
-import { InfoIcon } from "../componentes/Icons";
+import Main from "../components/Main";
+import { InfoIcon } from "../components/Icons";
 import { Link } from "expo-router";
+
 
 export default function Index() {
 
