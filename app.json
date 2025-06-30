@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "curso-Midudev-react-native",
-    "slug": "curso-Midudev-react-native",
+    "name": "cards-dragon-ball-react-native",
+    "slug": "cards-dragon-ball-react-native",
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "cartasDB",

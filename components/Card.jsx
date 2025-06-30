@@ -3,11 +3,19 @@ import { InfoIcon } from './Icons';
 import { useState } from 'react';
 
 const Card = ({ props }) => {
-  const { name, ki, image, race, description } = props;
-  const [descriptionVisible, setDescriptionVisible] = useState(false);
+  const {id, name, ki, image, race, description, transformations } = props;
+  const [infoButtons, setInfoButtons] = useState({
+    transformation: false,
+    planet: false,
+    description: false,
+  });
 
-  const toggleDescription = () => {
-    setDescriptionVisible(!descriptionVisible);
+  
+
+  const handleButtons = (e) => {
+    
+    if(e === "description") setInfoButtons((prev) => ({...prev, description: !prev.description}))
+    
   };
 
   return (
@@ -20,19 +28,36 @@ const Card = ({ props }) => {
         {ki !== undefined && (
           <Text style={styles.ki}>🔋 Ki: {ki}</Text>
         )}
-
-        
       </View>
 
-      {description && (
-          <Pressable onPress={toggleDescription} style={styles.iconButton}>
+      <View style={styles.infoButtonsContainer}>
+        {description && (
+          <Pressable onPress={() => handleButtons("description")} style={styles.infoButtons}>
+            {({ pressed }) => (
+              <InfoIcon style={{ opacity: pressed ? 0.4 : 1 }} />
+            )}
+          </Pressable>
+        )}
+        
+        {description && (
+          <Pressable onPress={() => handleButtons("description")} style={styles.infoButtons}>
             {({ pressed }) => (
               <InfoIcon style={{ opacity: pressed ? 0.4 : 1 }} />
             )}
           </Pressable>
         )}
 
-      {descriptionVisible && (
+        {description && (
+          <Pressable onPress={() => handleButtons("description")} style={styles.infoButtons}>
+            {({ pressed }) => (
+              <InfoIcon style={{ opacity: pressed ? 0.4 : 1 }} />
+            )}
+          </Pressable>
+        )}
+
+      </View>
+
+      {infoButtons.description && (
         <Text style={styles.description}>{description}</Text>
       )}
     </View>
@@ -70,9 +95,8 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   name: {
-    fontFamily: "SaiyanSans",
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: "Honk",
+    fontSize: 50,
     color: '#212121',
   },
   ki: {
@@ -82,12 +106,13 @@ const styles = StyleSheet.create({
   race: {
 
   },
-  iconButton: {
-    alignItems: "flex-end",
-    marginRight: 5,
+  infoButtonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 10,
   },
   description: {
-    fontFamily: "monospace",
+    fontFamily: "SaiyanSans",
     marginTop: 10,
     fontSize: 15,
     lineHeight: 20,

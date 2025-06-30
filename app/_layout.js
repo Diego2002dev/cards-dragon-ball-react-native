@@ -1,6 +1,6 @@
 import { Slot } from "expo-router";
 import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
+import { View, ActivityIndicator, StyleSheet, Text } from "react-native";
 import { useFonts } from 'expo-font';
 
 
@@ -21,6 +21,7 @@ function InnerLayout() {
 export default function Layout() {
 
     const [fontsLoaded] = useFonts({
+        "Honk": require("../assets/fonts/Honk.ttf"),
         "SaiyanSans": require("../assets/fonts/SaiyanSans.ttf"),
     })
 
