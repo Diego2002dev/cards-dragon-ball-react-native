@@ -22,7 +22,9 @@ export default function Layout() {
 
     const [fontsLoaded] = useFonts({
         "Honk": require("../assets/fonts/Honk.ttf"),
-        "SaiyanSans": require("../assets/fonts/SaiyanSans.ttf"),
+        "Knewave-Regular": require("../assets/fonts/Knewave-Regular.ttf"),
+        "BungeeInline-Regular": require("../assets/fonts/BungeeInline-Regular.ttf"),
+
     })
 
     if (!fontsLoaded) {
