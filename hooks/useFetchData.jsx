@@ -8,15 +8,24 @@ export function useFetchData(instance, api) {
 
         const fetch = async () => {
             try{    
-                const response = await instance.get(api);
-                setData(response.data.items || response.data);
+
+                const basicCharacters = await instance.get("characters?limit=78");
+                const ids = (basicCharacters.data.items || basicCharacters.data).map( id => id.id);
+                
+                const detailedCharacters = await Promise.all(
+                    ids.map(async (id) => {
+                        const response = await instance.get(`${api}${id}`);
+                        return response.data;
+                    })
+                )
+                setData(detailedCharacters);
             }
-            catch{
-                const error = console.error(error);
+            catch(error){
+                console.error(error);
             }
         }
         fetch();
-    }, [api])
+    }, [instance, api])
 
     return data;
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, View, ActivityIndicator, FlatList } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, FlatList } from 'react-native';
 import Card from './Card';
 import {useFetchData} from '../hooks/useFetchData';
 import instanceAxios from "../api/instanceAxios";
@@ -7,18 +7,15 @@ import instanceAxios from "../api/instanceAxios";
 
 export default function Main() {
 
-  const data = useFetchData(instanceAxios, "characters?limit=78");
-  const dataTransforms = useFetchData(instanceAxios, "transformations");
-  const planets = useFetchData(instanceAxios, "planets?limit=20");
+  const data = useFetchData(instanceAxios, "characters/");
 
   const [cards, setCards] = useState([]);
   
   useEffect (() => {
-    if(data.length && dataTransforms.length && planets.length) {
-      const fusion = [...data, ...dataTransforms, ...planets];
-      setCards(fusion);
+    if(data) {
+      setCards(data);
     }
-  }, [data, dataTransforms, planets]);
+  }, [data]);
 
   return (
     <>
@@ -44,26 +41,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 1,
   },
 });
-
-
-
-// MANERAS DE DECLARAR COMPONENTES:
-
-// export default function Componente(){}  <== Componentes principales
-// 
-//
-// const Componente = () => {}  <== Componente auxiliar  *SE EXPORTA AL FINAL*  => export default Saludo;
-//
-//
-//
-//
-// (FINAL) export default Saludo;  => A LA HORA DE IMPORTARLO =>  import Saludo from './Saludo';
-//
-// (INICIO) export const Saludo = ...;  => A LA HORA DE IMPORTARLO =>  import { Saludo } from './Saludo';
-//
-// 
-//
-// Los Hooks siempre empiezan por "use..."
-// Las funciones que solo se vayan a usar en el useEffect es mejor que se metan en el propio useEffect

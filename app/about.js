@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, View, Text } from "react-native";
-import { InfoIcon } from "../components/Icons";
+import { AboutIcon } from "../components/Icons";
 import { Link } from "expo-router";
 
 export default function About() {
@@ -8,7 +8,7 @@ export default function About() {
         <View style ={styles.containerAbout}>
             <Link asChild href="/">
                 <Pressable>
-                    <InfoIcon />
+                    <AboutIcon />
                 </Pressable>
             </Link>
             <Text>

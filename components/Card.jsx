@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { InfoIcon, PlanetIcon, TransformationsIcon } from './Icons';
 import { useState } from 'react';
+import colors from "../assets/styles/colors";
 
 const Card = ({ props }) => {
 
-  const {id, name, ki, image, race, description, gender, affiliation, transformations, planets } = props;
+  const {id, name, ki, image, race, description, affiliation, transformations,
+         originPlanet: planet } = props;
 
     const upperCaseName = name.toUpperCase();
-
 
 
   const [infoButtons, setInfoButtons] = useState({
@@ -26,32 +27,35 @@ const Card = ({ props }) => {
       <Image style={styles.image} source={{ uri: image }} />
 
       <View style={styles.infoContainer}>
-        <View style={styles.containerInfoContainer}><Text style={styles.gender}>{race}</Text></View>
+        <View style={styles.containerInfoContainer}><Text style={styles.race}>{race}</Text></View>
         <View style={styles.containerInfoContainer}><Text style={styles.race}>{affiliation}</Text></View>
 
         {ki !== undefined && (
-        <View style={styles.containerInfoContainer}><Text style={styles.ki}>🔋 Ki: {ki}</Text></View>
+        <View style={styles.containerInfoContainer}><Text style={styles.ki}>Ki: {ki}</Text></View>
         )}
       </View>
 
+
+
       <View style={styles.infoButtonsContainer}>
-        {description && (
+        
           <Pressable onPress={() => handleButtons("planet")} style={styles.infoButtons}>
             {({ pressed }) => (
               <PlanetIcon style={{
                 opacity: pressed ? 1 : 1,
-                color: infoButtons.planet ? "orange" : "",
+                color: infoButtons.planet ? colors.borders : colors.descriptions,
+                
               }} />
             )}
           </Pressable>
-        )}
+        
 
-        {description && (
+        {transformations.length !== 0 && (
           <Pressable onPress={() => handleButtons("transformations")} style={styles.infoButtons}>
             {({ pressed }) => (
               <TransformationsIcon style={{
                 opacity: pressed ? 1 : 1,
-                color: infoButtons.transformations ? "orange" : "",
+                color: infoButtons.transformations ? colors.borders : colors.descriptions,
               }} />
             )}
           </Pressable>
@@ -62,25 +66,34 @@ const Card = ({ props }) => {
             {({ pressed }) => (
               <InfoIcon style={{
                 opacity: pressed ? 1 : 1,
-                color: infoButtons.description ? "orange" : "",
+                color: infoButtons.description ? colors.borders : colors.descriptions,
+                
               }} />
             )}
           </Pressable>
         )}
-
       </View>
 
       {infoButtons.planet && (
-              <Text style={styles.planet}>PLANET</Text>
-            )}
+        <View style={styles.planetsContainer}>
+          <Text style={styles.planetName}>{planet.name}</Text>
+          <Image source={{uri:planet.image}} style={styles.planetImage} />
+          <Text style={styles.planetDescription} >{planet.description}</Text>
+        </View>
+        )}
 
       {infoButtons.transformations && (
-        <Text style={styles.transformations}>TRANSFORMATIONS</Text>
-            )}
+        transformations.map((transformation) => (
+        <View style={styles.transformationsContainer} key={transformation.name}>
+          <Text style={styles.transformationsName}>{transformation.name}</Text>
+          <Image source={{uri: transformation.image}} style={styles.transformationsImage}/>
+          <Text style={styles.transformationsKi}>Ki: {transformation.ki}</Text>
+        </View>
+        )) )}
 
       {infoButtons.description && (
         <Text style={styles.description}>{description}</Text>
-      )}
+        )}
 
     </View>
   );
@@ -91,11 +104,11 @@ export default Card;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'rgb(255, 240,150)',
+    backgroundColor: colors.backgroundCard,
     borderRadius: 20,
     padding: 16,
-    marginVertical: 12,
-    marginHorizontal: 20,
+    marginVertical: 25,
+    marginHorizontal: 22,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.4,
@@ -103,17 +116,16 @@ const styles = StyleSheet.create({
     elevation: 5,
 
     borderWidth: 3,
-    borderColor: 'orange', 
+    borderColor: colors.borders, 
   },
   image: {
     width: '100%',
-    height: 285,
+    height: 270,
     borderRadius: 8,
     marginTop: 8,
-    marginBottom: 8,
+    marginBottom: 14,
     resizeMode: 'contain',
-    backgroundColor: "#fffde7",
-
+    backgroundColor: colors.innerCardBackground,
   },
   infoContainer: {
     flexDirection: 'column',
@@ -124,8 +136,8 @@ const styles = StyleSheet.create({
   containerInfoContainer: {
     width: "100%",
     
-    backgroundColor: "#fffde7",
-    borderColor: "orange",
+    backgroundColor: colors.innerCardBackground,
+    borderColor: colors.borders,
 
     borderBottomWidth: 4,
     borderRightWidth: 4,
@@ -141,41 +153,114 @@ const styles = StyleSheet.create({
 
   },
 
-  gender: {
-    fontFamily: "BungeeInline-Regular",
-    fontSize: 22,
-    color: "orange",
-    lineHeight: 22,
-  },
-
   race: {
     fontFamily: "BungeeInline-Regular",
-    fontSize: 22,
-    color: "orange",
+    fontSize: 18,
+    color: colors.borders,
     lineHeight: 22,
   },
   
   ki: {
     fontFamily: "BungeeInline-Regular",
-    fontSize: 20,
+    fontSize: 16,
     lineHeight: 22,
+    color: colors.borders,
   },
-  
 
 
   infoButtonsContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginTop: 10,
+    alignItems: "flex-end",
   },
   description: {
     fontFamily: "Knewave-Regular",
     marginTop: 10,
     fontSize: 15,
     lineHeight: 20,
-    color: 'rgba(0, 0, 0, 0.8)',
-    backgroundColor: '#fffde7',
+    color: colors.descriptions,
+    backgroundColor: colors.innerCardBackground,
     padding: 10,
     borderRadius: 8,
   },
+
+
+
+  planetsContainer: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: colors.innerCardBackground,
+    padding: 16,
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  planetName: {
+    textAlign: "center",
+    fontFamily: "BungeeInline-Regular",
+    fontSize: 28,
+    color: colors.borders,
+    marginTop: "-20",
+  },
+  planetImage: {
+    width: "95%",
+    height: 220,
+    resizeMode: "cover",
+    borderWidth: 3,
+    borderColor: colors.borders,
+    borderRadius: 8,
+    alignSelf: "center",
+    marginBottom: "-5",
+    zIndex: 1,
+  },
+  planetDescription: {
+    width: "95%",
+    alignSelf: "center",
+    fontSize: 15,
+    fontFamily: "Knewave-Regular",
+    lineHeight: 20,
+    backgroundColor: colors.backgroundCard,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    padding: 10,
+    color: colors.descriptions,
+  },
+
+  transformationsContainer: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: colors.innerCardBackground,
+    padding: 16,
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  transformationsName: {
+    textAlign: "center",
+    fontFamily: "BungeeInline-Regular",
+    fontSize: 28,
+    color: colors.borders,
+    marginTop: "-20",
+  },
+  transformationsImage: {
+    width: "95%",
+    height: 250,
+    resizeMode: "contain",
+    backgroundColor: colors.backgroundCard,
+    borderRadius: 8,
+    alignSelf: "center",
+    marginBottom: "-5",
+    zIndex: 1,
+  },
+  transformationsKi: {
+    width: "95%",
+    alignSelf: "center",
+    fontSize: 15,
+    fontFamily: "BungeeInline-Regular",
+    lineHeight: 20,
+    backgroundColor: colors.backgroundCard,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    padding: 10,
+    color: colors.borders,
+  }
 });

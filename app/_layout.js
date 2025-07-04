@@ -1,7 +1,8 @@
 import { Slot } from "expo-router";
 import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
-import { View, ActivityIndicator, StyleSheet, Text } from "react-native";
-import { useFonts } from 'expo-font';
+import { View, ActivityIndicator, StyleSheet } from "react-native";
+import FontCharge from "../components/FontCharge";
+import { StatusBar } from "react-native";
 
 
 function InnerLayout() {
@@ -16,23 +17,19 @@ function InnerLayout() {
             <Slot />
         </View>
   );
-}   
+}
 
 export default function Layout() {
 
-    const [fontsLoaded] = useFonts({
-        "Honk": require("../assets/fonts/Honk.ttf"),
-        "Knewave-Regular": require("../assets/fonts/Knewave-Regular.ttf"),
-        "BungeeInline-Regular": require("../assets/fonts/BungeeInline-Regular.ttf"),
-
-    })
+    const fontsLoaded = FontCharge();
 
     if (!fontsLoaded) {
-        return <ActivityIndicator size="large" color="black" />  // <=Futuro COMPONENTE
+        return <ActivityIndicator size="large" color="black" />
     }
 
      return (
     <SafeAreaProvider>
+      <StatusBar style="auto" />
       <InnerLayout />
     </SafeAreaProvider>
   )
