@@ -1,25 +1,15 @@
-import { useState, useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator, FlatList } from 'react-native';
 import Card from './Card';
-import {useFetchData} from '../hooks/useFetchData';
-import instanceAxios from "../api/instanceAxios";
+import { useAppContext } from '../context/AppContext';
 
 
 export default function Main() {
 
-  const data = useFetchData(instanceAxios, "characters/");
-
-  const [cards, setCards] = useState([]);
-  
-  useEffect (() => {
-    if(data) {
-      setCards(data);
-    }
-  }, [data]);
+  const {data: cards} = useAppContext();
 
   return (
     <>
-      {cards.length == 0 ? (
+      {cards.length === 0 ? (
           <View style={styles.containerMain}>
               <ActivityIndicator size="large" color="black" />
           </View>
