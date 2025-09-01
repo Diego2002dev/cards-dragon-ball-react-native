@@ -1,11 +1,24 @@
-import { StyleSheet, View, ActivityIndicator, FlatList } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, FlatList, BackHandler } from 'react-native';
 import Card from './Card';
 import { useAppContext } from '../context/AppContext';
-
+import { useEffect } from 'react';
 
 export default function Main() {
-
   const {data: cards} = useAppContext();
+
+  useEffect(() => {
+    const backAction = () => {
+      BackHandler.exitApp();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <>

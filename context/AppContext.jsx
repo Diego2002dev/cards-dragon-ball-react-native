@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useFetchData } from "../hooks/useFetchData";
-import instanceAxios from "../api/instanceAxios";
+import axiosInstance from "../api/axiosInstance";
 import FontCharge from "../components/FontCharge";
 
 const AppContext = createContext();
@@ -9,7 +9,7 @@ export const AppProvider = ({children}) => {
 
     const fontsLoaded = FontCharge();
 
-    const characters = useFetchData(instanceAxios, "characters/")
+    const characters = useFetchData(axiosInstance, "characters/")
     const [data, setData] = useState([]);
     const [delayCompleted, setDelayCompleted] = useState(false);
 
